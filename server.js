@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 // Serve the static HTML file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'dashboard.html'));
 });
 
 // POST endpoint to receive data
