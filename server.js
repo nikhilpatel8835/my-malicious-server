@@ -21,18 +21,14 @@ app.get('/', (req, res) => {
 app.post('/receive_data', (req, res) => {
     const receivedData = req.body;
     const text = receivedData.data;
+    const deviceId = receivedData.deviceId || 'Unknown-Device'; // THIS IS THE KEY CHANGE
 
     if (text) {
-        // --- THIS IS THE NEW PART ---
-        // Create a timestamp
         const timestamp = new Date().toISOString();
         
-        // Create the line to be saved: [TIMESTAMP] [DEVICE_ID] DATA
-        // We'll use the IP address as a simple device identifier
-        const deviceIp = req.ip || req.connection.remoteAddress;
-        const logEntry = `[${timestamp}] [${deviceIp}] ${text}\n`;
+        // Use the new device ID in the log entry
+        const logEntry = `[${timestamp}] [${deviceId}] ${text}\n`;
         
-        // Append the data to the file
         fs.appendFile(DATA_FILE, logEntry, (err) => {
             if (err) {
                 console.error("Error saving to file:", err);
@@ -42,8 +38,6 @@ app.post('/receive_data', (req, res) => {
                 console.log("-------------------------");
             }
         });
-        // --- END OF NEW PART ---
-
     } else {
         console.log("--- EMPTY DATA RECEIVED ---");
     }
