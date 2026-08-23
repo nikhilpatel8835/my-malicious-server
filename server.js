@@ -51,6 +51,20 @@ app.post('/receive_data', (req, res) => {
     res.status(200).send('Data received');
 });
 
+// --- ADD THIS NEW ROUTE ---
+// GET endpoint to fetch the stored data as plain text
+app.get('/get_data', (req, res) => {
+    const filePath = path.join(__dirname, DATA_FILE);
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            res.status(500).send('Error reading data file.');
+        } else {
+            res.type('text/plain').send(data);
+        }
+    });
+});
+// --- END OF NEW ROUTE ---
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
     console.log(`Data is being saved to ${DATA_FILE}`);
